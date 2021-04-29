@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/list_margin_left"
+    android:background="@color/note_info_back">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".NoteInfoFragment">
+
+        <TextView
+            android:id="@+id/note_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/tv_top"
+            android:gravity="center"
+            android:textSize="@dimen/tv_header"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Заметка1" />
+
+        <TextView
+            android:id="@+id/note_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/tv_top"
+            android:textSize="@dimen/tv_text"
+            app:layout_constraintTop_toBottomOf="@id/note_name"
+            tools:text="Текст заметки" />
+
+        <TextView
+            android:id="@+id/note_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/tv_top"
+            android:textSize="@dimen/tv_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/note_text"
+            tools:text="12.04.2010" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/save_note_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save_note"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/tv_text"
+            app:layout_constraintTop_toBottomOf="@id/note_date" />
+
+        <DatePicker
+            android:translationZ="@dimen/transZ"
+            android:id="@+id/datePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"
+            tools:visibility="gone"
+            android:background="@color/white"
+            android:layout_centerHorizontal="true" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
