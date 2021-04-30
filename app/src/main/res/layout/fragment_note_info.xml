@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/tv_top"
             android:gravity="center"
+            android:text="@string/select_note"
             android:textSize="@dimen/tv_header"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Заметка1" />
