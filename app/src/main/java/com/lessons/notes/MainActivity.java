@@ -15,7 +15,6 @@ public class MainActivity extends AppCompatActivity implements PublisherHolder, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (!getResources().getBoolean(R.bool.isLandscape)) {
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);

@@ -1,6 +1,8 @@
 package com.lessons.notes.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -64,4 +66,37 @@ public class NotesRepository {
         notes.add(new Note(7, "Заметка7", "Текст7", new Date(System.currentTimeMillis() - 7000 * 60 * 60 * 24)));
     }
 
+    public ArrayList<Note> filterByName(String text) {
+        if (text == null)
+            return notes;
+        ArrayList<Note> list = new ArrayList<>();
+        for (Note n : notes) {
+            if (n.getName() != null && n.getName().toUpperCase().contains(text.toUpperCase())) {
+                list.add(n);
+            }
+        }
+        return list;
+    }
+
+    public ArrayList<Note> sortByName() {
+        ///ArrayList<Note> list = new ArrayList<>(notes);
+        Collections.sort(notes, new Comparator<Note>() {
+            @Override
+            public int compare(Note o1, Note o2) {
+                return o1.getName().compareToIgnoreCase(o2.getName());
+            }
+        });
+        return notes;
+    }
+
+    public ArrayList<Note> sortByDate() {
+        //.. ArrayList<Note> list = new ArrayList<>(notes);
+        Collections.sort(notes, new Comparator<Note>() {
+            @Override
+            public int compare(Note o1, Note o2) {
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
+        return notes;
+    }
 }

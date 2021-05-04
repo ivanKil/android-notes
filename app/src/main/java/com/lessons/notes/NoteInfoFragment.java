@@ -3,13 +3,16 @@ package com.lessons.notes;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.lessons.notes.domain.Note;
@@ -52,6 +55,22 @@ public class NoteInfoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init(view);
+        initTopMenu(view);
+    }
+
+    private void initTopMenu(View view) {
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.send) {
+                    Toast.makeText(requireContext(), "Не реализовано", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+
+                return false;
+            }
+        });
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.lessons.notes;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -10,10 +12,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.lessons.notes.domain.Note;
 import com.lessons.notes.domain.NotesRepository;
+
+import java.util.List;
 
 public class NotesFragment extends Fragment implements Observer {
 
@@ -41,7 +47,45 @@ public class NotesFragment extends Fragment implements Observer {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initList(view);
+        initList(view, (notesRepository = new NotesRepository()).getNotes());
+        initTopMenu(view);
+    }
+
+    private void initTopMenu(View view) {
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        Menu menu = toolbar.getMenu();
+        final SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                ((LinearLayout) view.findViewById(R.id.list_layot)).removeAllViews();
+                initList(view, notesRepository.filterByName(s));
+                return true;
+            }
+        });
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.action_sort_by_name) {
+                    ((LinearLayout) view.findViewById(R.id.list_layot)).removeAllViews();
+                    initList(view, notesRepository.sortByName());
+                    return true;
+                }
+                if (item.getItemId() == R.id.action_sort_by_date) {
+                    ((LinearLayout) view.findViewById(R.id.list_layot)).removeAllViews();
+                    initList(view, notesRepository.sortByDate());
+                    return true;
+                }
+
+                return false;
+            }
+        });
     }
 
     private void openNoteDetail(Note note) {
@@ -50,9 +94,9 @@ public class NotesFragment extends Fragment implements Observer {
         }
     }
 
-    private void initList(View view) {
+    private void initList(View view, List<Note> notex) {
         LinearLayout layoutView = view.findViewById(R.id.list_layot);
-        for (Note note : (notesRepository = new NotesRepository()).getNotes()) {
+        for (Note note : notex) {
             TextView tv = new TextView(getContext());
             tv.setText(note.getName());
             tv.setTextSize(30);
