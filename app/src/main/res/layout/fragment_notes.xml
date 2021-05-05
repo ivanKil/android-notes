@@ -14,7 +14,6 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="@string/notes_list"
             app:menu="@menu/notes_menu"
             android:background="@android:color/white" />
 

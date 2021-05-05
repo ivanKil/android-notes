@@ -1,6 +1,6 @@
 package com.lessons.notes;
 
-import com.lessons.notes.domain.Note;
+import com.lessons.notes.note.domain.Note;
 
 public interface Observer {
     void updateNote(Note note);

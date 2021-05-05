@@ -1,4 +1,4 @@
-package com.lessons.notes.domain;
+package com.lessons.notes.note.domain;
 
 import android.os.Parcel;
 import android.os.Parcelable;

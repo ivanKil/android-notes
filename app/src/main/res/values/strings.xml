@@ -15,4 +15,10 @@
     <string name="notes_list">Список заметок</string>
     <string name="note_info">Информация о заметке</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="nav_header_title">Имя пользователя</string>
+    <string name="nav_header_subtitle">какая-то дополнительная информация</string>
+    <string name="menu_home">Заметки</string>
+    <string name="menu_gallery">О программе</string>
+    <string name="about">Приложение \"Заметки\"</string>
 </resources>

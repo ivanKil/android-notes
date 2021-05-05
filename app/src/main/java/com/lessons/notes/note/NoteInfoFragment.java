@@ -1,4 +1,4 @@
-package com.lessons.notes;
+package com.lessons.notes.note;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,7 +15,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-import com.lessons.notes.domain.Note;
+import com.lessons.notes.Publisher;
+import com.lessons.notes.PublisherHolder;
+import com.lessons.notes.R;
+import com.lessons.notes.note.domain.Note;
 
 import java.text.DateFormat;
 import java.util.Calendar;
