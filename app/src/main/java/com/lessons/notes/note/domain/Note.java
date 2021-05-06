@@ -10,6 +10,16 @@ public class Note implements Parcelable {
     private String name;
     private String text;
     private Date date;
+    private transient boolean forEdit = false;
+
+    public boolean isForEdit() {
+        return forEdit;
+    }
+
+    public Note setForEdit(boolean forEdit) {
+        this.forEdit = forEdit;
+        return this;
+    }
 
 
     public Note(long id, String name, String text, Date date) {

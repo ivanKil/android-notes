@@ -19,17 +19,9 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView android:layout_height="match_parent"
-        android:layout_width="match_parent"
+    <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/list_layot"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/list_margin_left" />
-    </ScrollView>
+        android:id="@+id/list_layot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

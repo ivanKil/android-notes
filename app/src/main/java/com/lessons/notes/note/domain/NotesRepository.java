@@ -2,7 +2,6 @@ package com.lessons.notes.note.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -79,24 +78,12 @@ public class NotesRepository {
     }
 
     public ArrayList<Note> sortByName() {
-        ///ArrayList<Note> list = new ArrayList<>(notes);
-        Collections.sort(notes, new Comparator<Note>() {
-            @Override
-            public int compare(Note o1, Note o2) {
-                return o1.getName().compareToIgnoreCase(o2.getName());
-            }
-        });
+        Collections.sort(notes, (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
         return notes;
     }
 
     public ArrayList<Note> sortByDate() {
-        //.. ArrayList<Note> list = new ArrayList<>(notes);
-        Collections.sort(notes, new Comparator<Note>() {
-            @Override
-            public int compare(Note o1, Note o2) {
-                return o1.getDate().compareTo(o2.getDate());
-            }
-        });
+        Collections.sort(notes, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
         return notes;
     }
 }

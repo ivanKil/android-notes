@@ -1,4 +1,4 @@
-package com.lessons.notes.note;
+package com.lessons.notes;
 
 import android.os.Bundle;
 
@@ -11,7 +11,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
-import com.lessons.notes.R;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,12 +1,10 @@
 package com.lessons.notes.note;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,23 +12,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.lessons.notes.Publisher;
-import com.lessons.notes.PublisherHolder;
 import com.lessons.notes.R;
 import com.lessons.notes.note.domain.Note;
 
 import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class NoteInfoFragment extends Fragment {
     public static final String ARG_NOTE = "ARG_NOTE";
     private Note note;
-    private Date notesDate;
-    private Publisher publisher;
     DateFormat dateFormat;
+    private NoteViewModel viewModel;
+    private TextView tvName;
+    private TextView tvText;
+    private TextView dateTv;
 
     public static NoteInfoFragment newInstance(Note param1) {
         NoteInfoFragment fragment = new NoteInfoFragment();
@@ -57,7 +53,14 @@ public class NoteInfoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        dateFormat = android.text.format.DateFormat.getDateFormat(view.getContext());
+        viewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
+        viewModel.getSelected().observe(getViewLifecycleOwner(), note -> {
+            this.note = note;
+            setData();
+        });
         init(view);
+        setData();
         initTopMenu(view);
     }
 
@@ -70,7 +73,6 @@ public class NoteInfoFragment extends Fragment {
                     Toast.makeText(requireContext(), "Не реализовано", Toast.LENGTH_SHORT).show();
                     return true;
                 }
-
                 return false;
             }
         });
@@ -83,52 +85,19 @@ public class NoteInfoFragment extends Fragment {
     }
 
     private void init(View view) {
-        view.findViewById(R.id.save_note_btn).setVisibility(note == null ? View.GONE : View.VISIBLE);
-        if (note != null) {
-            dateFormat = android.text.format.DateFormat.getDateFormat(view.getContext());
-            ((TextView) view.findViewById(R.id.note_name)).setText(note.getName());
-            ((TextView) view.findViewById(R.id.note_text)).setText(note.getText());
-            TextView dateTv = view.findViewById(R.id.note_date);
-            notesDate = note.getDate();
-            dateTv.setText(dateFormat.format(notesDate));
-
-            DatePicker datePicker = view.findViewById(R.id.datePicker);
-            Calendar calendar = new GregorianCalendar();
-            calendar.setTime(notesDate);
-            datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH), changeDateNotesListeners(dateTv, datePicker));
-            dateTv.setOnClickListener(v -> datePicker.setVisibility(View.VISIBLE));
-            view.findViewById(R.id.save_note_btn).setOnClickListener(v -> saveNote());
-        } else {
+        tvName = ((TextView) view.findViewById(R.id.note_name));
+        tvText = ((TextView) view.findViewById(R.id.note_text));
+        dateTv = view.findViewById(R.id.note_date);
+        if (note == null) {
             ((TextView) view.findViewById(R.id.note_name)).setText(getResources().getString(R.string.select_note));
         }
     }
 
-
-    private DatePicker.OnDateChangedListener changeDateNotesListeners(TextView dateTv, DatePicker datePicker) {
-        return (view, year, monthOfYear, dayOfMonth) -> {
-            Calendar c = new GregorianCalendar();
-            c.set(Calendar.YEAR, year);
-            c.set(Calendar.MONTH, monthOfYear);
-            c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            notesDate = c.getTime();
-            dateTv.setText(dateFormat.format(notesDate));
-            datePicker.setVisibility(View.GONE);
-        };
-    }
-
-    private void saveNote() {
-        note.setDate(new Date(notesDate.getTime()));
-        if (publisher != null) {
-            publisher.notify(note);
-        }
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (context instanceof PublisherHolder) {
-            publisher = ((PublisherHolder) context).getPublisher();
+    private void setData() {
+        if (note != null) {
+            tvName.setText(note.getName());
+            tvText.setText(note.getText());
+            dateTv.setText(dateFormat.format(note.getDate()));
         }
     }
 }
