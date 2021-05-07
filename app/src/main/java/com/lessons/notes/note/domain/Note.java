@@ -1,4 +1,4 @@
-package com.lessons.notes.domain;
+package com.lessons.notes.note.domain;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -10,6 +10,16 @@ public class Note implements Parcelable {
     private String name;
     private String text;
     private Date date;
+    private transient boolean forEdit = false;
+
+    public boolean isForEdit() {
+        return forEdit;
+    }
+
+    public Note setForEdit(boolean forEdit) {
+        this.forEdit = forEdit;
+        return this;
+    }
 
 
     public Note(long id, String name, String text, Date date) {
@@ -77,5 +87,15 @@ public class Note implements Parcelable {
 
     public long getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", text='" + text + '\'' +
+                ", date=" + date +
+                '}';
     }
 }
