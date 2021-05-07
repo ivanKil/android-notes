@@ -17,7 +17,7 @@ import java.util.List;
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
 
     class NotesViewHolder extends RecyclerView.ViewHolder {
-        TextView title;
+        private final TextView title;
 
         public NotesViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -32,8 +32,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                     getClickListener().onEditClicked(data.get(getAdapterPosition()));
                 }
             });
-            ;
+        }
 
+        public void bind(Note note) {
+            title.setText(note.getName());
         }
     }
 
@@ -56,7 +58,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     @Override
     public void onBindViewHolder(@NonNull NotesViewHolder holder, int position) {
         Note note = data.get(position);
-        holder.title.setText(note.getName());
+        holder.bind(note);
     }
 
     @Override

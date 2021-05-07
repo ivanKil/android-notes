@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.util.Date;
 
 public class Note implements Parcelable {
-    private long id;
+    private final long id;
     private String name;
     private String text;
     private Date date;

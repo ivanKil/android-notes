@@ -2,7 +2,6 @@ package com.lessons.notes.note;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -66,15 +65,12 @@ public class NoteInfoFragment extends Fragment {
 
     private void initTopMenu(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.send) {
-                    Toast.makeText(requireContext(), "Не реализовано", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                return false;
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.send) {
+                Toast.makeText(requireContext(), "Не реализовано", Toast.LENGTH_SHORT).show();
+                return true;
             }
+            return false;
         });
     }
 
