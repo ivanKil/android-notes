@@ -56,7 +56,14 @@ public class NoteViewModel extends ViewModel {
     }
 
     public void updateNote(Note note) {
+        note.setForEdit(false);
         repository.updateNote(note);
+        savedNote.setValue(null);
     }
 
+    public void delete(Note note) {
+        int ind = repository.delete(note);
+        notesLiveData.setValue(repository.getNotes());
+        select(repository.getNearNote(ind));
+    }
 }

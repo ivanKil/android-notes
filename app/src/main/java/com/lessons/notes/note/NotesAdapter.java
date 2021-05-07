@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lessons.notes.R;
@@ -15,6 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
+    private final Fragment fragment;
+    private int menuPosition;
+    private final ArrayList<Note> data = new ArrayList<>();
+    private OnNoteClicked clickListener;
+
+    public NotesAdapter(Fragment fragment) {
+        this.fragment = fragment;
+    }
+
+    public Note getNoteMenuPosition() {
+        return data.get(menuPosition);
+    }
 
     class NotesViewHolder extends RecyclerView.ViewHolder {
         private final TextView title;
@@ -32,16 +45,30 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                     getClickListener().onEditClicked(data.get(getAdapterPosition()));
                 }
             });
+            registerContextMenu(title);
+            title.setOnLongClickListener(v -> {
+                menuPosition = getLayoutPosition();
+                title.showContextMenu();
+                return true;
+            });
+
         }
+
+        private void registerContextMenu(@NonNull View itemView) {
+            if (fragment != null) {
+                itemView.setOnLongClickListener(v -> {
+                    menuPosition = getLayoutPosition();
+                    return false;
+                });
+                fragment.registerForContextMenu(itemView);
+            }
+        }
+
 
         public void bind(Note note) {
             title.setText(note.getName());
         }
     }
-
-    private final ArrayList<Note> data = new ArrayList<>();
-
-    private OnNoteClicked clickListener;
 
     public void addData(List<Note> toAdd) {
         data.clear();

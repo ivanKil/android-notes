@@ -1,8 +1,11 @@
 package com.lessons.notes.note;
 
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -42,7 +45,9 @@ public class NotesFragment extends Fragment {
             adapter.notifyDataSetChanged();
         });
         viewModel.getSavedNote().observe(getViewLifecycleOwner(), note -> {
-            viewModel.updateNote(note);
+            if (note != null) {
+                viewModel.updateNote(note);
+            }
         });
         if (savedInstanceState == null) {
             viewModel.requestNotes();
@@ -52,7 +57,7 @@ public class NotesFragment extends Fragment {
     }
 
     private void initRecyclerView(View view) {
-        adapter = new NotesAdapter();
+        adapter = new NotesAdapter(this);
         adapter.setClickListener(new NotesAdapter.OnNoteClicked() {
             @Override
             public void onNoteClicked(Note note) {
@@ -99,8 +104,33 @@ public class NotesFragment extends Fragment {
                 viewModel.sortByDate();
                 return true;
             }
+            if (item.getItemId() == R.id.action_add) {
+                viewModel.select(new Note().setForEdit(true));
+                return true;
+            }
 
             return false;
         });
     }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = requireActivity().getMenuInflater();
+        inflater.inflate(R.menu.note_context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_update:
+                viewModel.select(adapter.getNoteMenuPosition().setForEdit(true));
+                return true;
+            case R.id.action_delete:
+                viewModel.delete(adapter.getNoteMenuPosition().setForEdit(true));
+                return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
 }

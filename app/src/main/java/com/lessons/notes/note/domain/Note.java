@@ -21,6 +21,9 @@ public class Note implements Parcelable {
         return this;
     }
 
+    public Note() {
+        id = -1;
+    }
 
     public Note(long id, String name, String text, Date date) {
         this.id = id;
@@ -98,4 +101,5 @@ public class Note implements Parcelable {
                 ", date=" + date +
                 '}';
     }
+
 }

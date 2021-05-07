@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/tv_top"
                 android:gravity="center"
-                android:text="@string/select_note"
+                android:hint="@string/note_name_hint"
                 android:textSize="@dimen/tv_header"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Заметка1" />
@@ -35,6 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/tv_top"
+                android:hint="@string/note_text_hint"
                 android:textSize="@dimen/tv_text"
                 app:layout_constraintTop_toBottomOf="@id/note_name"
                 tools:text="Текст заметки" />
@@ -57,19 +58,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="@dimen/tv_text"
                 app:layout_constraintTop_toBottomOf="@id/note_date" />
-
-            <DatePicker
-                android:translationZ="@dimen/transZ"
-                android:id="@+id/datePicker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:visibility="gone"
-                tools:visibility="gone"
-                android:background="@color/white"
-                android:layout_centerHorizontal="true" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

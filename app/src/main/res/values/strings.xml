@@ -22,4 +22,8 @@
     <string name="menu_gallery">О программе</string>
     <string name="about">Приложение \"Заметки\"</string>
     <string name="empty_name">Название заметки не может быть пустым</string>
+    <string name="action_add">Добавить</string>
+    <string name="note_name_hint">Название</string>
+    <string name="note_text_hint">Текст заметки</string>
+    <string name="action_delete">Удалить</string>
 </resources>
