@@ -20,7 +20,7 @@ public class NotesRepository {
         Note n = getNoteById(note.getId());
         if (n == null) {
             synchronized (this) {
-                long nextId = notes.size();
+                long nextId = notes.get(notes.size() - 1).getId() + 1;
                 Note newNote = new Note(nextId, note.getName(), note.getText(), note.getDate());
                 notes.add(newNote);
             }

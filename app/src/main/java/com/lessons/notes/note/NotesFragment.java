@@ -15,6 +15,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,7 @@ import com.lessons.notes.note.domain.Note;
 public class NotesFragment extends Fragment {
     private NotesAdapter adapter;
     private NoteViewModel viewModel;
+    private static final int MY_DEFAULT_DURATION = 1000;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,8 +43,7 @@ public class NotesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
         viewModel.getNotesLiveData().observe(getViewLifecycleOwner(), notes -> {
-            adapter.addData(notes);
-            adapter.notifyDataSetChanged();
+            adapter.setData(notes);
         });
         viewModel.getSavedNote().observe(getViewLifecycleOwner(), note -> {
             if (note != null) {
@@ -74,6 +75,13 @@ public class NotesFragment extends Fragment {
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         notesList.setLayoutManager(lm);
         notesList.setAdapter(adapter);
+
+        DefaultItemAnimator animator = new DefaultItemAnimator();
+        animator.setAddDuration(MY_DEFAULT_DURATION);
+        animator.setRemoveDuration(MY_DEFAULT_DURATION);
+        animator.setChangeDuration(MY_DEFAULT_DURATION);
+        notesList.setItemAnimator(animator);
+
     }
 
     private void initTopMenu(View view) {

@@ -59,11 +59,11 @@ public class NoteViewModel extends ViewModel {
         note.setForEdit(false);
         repository.updateNote(note);
         savedNote.setValue(null);
+        notesLiveData.setValue(repository.getNotes());
     }
 
     public void delete(Note note) {
-        int ind = repository.delete(note);
+        repository.delete(note);
         notesLiveData.setValue(repository.getNotes());
-        select(repository.getNearNote(ind));
     }
 }

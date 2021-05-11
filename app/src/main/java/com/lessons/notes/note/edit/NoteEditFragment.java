@@ -106,10 +106,7 @@ public class NoteEditFragment extends Fragment {
             Toast.makeText(requireContext(), getView().getResources().getString(R.string.empty_name), Toast.LENGTH_SHORT).show();
             return;
         }
-        note.setName(tveName.getText().toString());
-        note.setText(tveText.getText().toString());
-        note.setDate(new Date(notesDate.getTime()));
-        viewModel.saveNote(note);
-        viewModel.requestNotes();
+        Note newN = new Note(note.getId(), tveName.getText().toString(), tveText.getText().toString(), new Date(notesDate.getTime()));
+        viewModel.saveNote(newN);
     }
 }
