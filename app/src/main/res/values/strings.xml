@@ -8,5 +8,22 @@
     <string name="hello_world">Hello Square World!</string>
     <string name="select_note">Выберите заметку для просмотра</string>
     <string name="save_note">Сохранить</string>
+    <string name="action_search">Поиск по названию</string>
+    <string name="action_sort_by_name">Сортировать по названию</string>
+    <string name="action_sort_by_date">Сортировать по дате</string>
+    <string name="send">Поделиться</string>
+    <string name="notes_list">Список заметок</string>
+    <string name="note_info">Информация о заметке</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="nav_header_title">Имя пользователя</string>
+    <string name="nav_header_subtitle">какая-то дополнительная информация</string>
+    <string name="menu_home">Заметки</string>
+    <string name="menu_gallery">О программе</string>
+    <string name="about">Приложение \"Заметки\"</string>
+    <string name="empty_name">Название заметки не может быть пустым</string>
+    <string name="action_add">Добавить</string>
+    <string name="note_name_hint">Название</string>
+    <string name="note_text_hint">Текст заметки</string>
+    <string name="action_delete">Удалить</string>
 </resources>
