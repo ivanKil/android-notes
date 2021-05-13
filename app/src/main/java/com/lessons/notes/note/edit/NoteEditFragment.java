@@ -83,7 +83,7 @@ public class NoteEditFragment extends Fragment {
     }
 
     private void setData() {
-        if (note.getId() != -1) {
+        if (!note.getId().equals("-1")) {
             tveName.setText(note.getName());
             tveText.setText(note.getText());
         }

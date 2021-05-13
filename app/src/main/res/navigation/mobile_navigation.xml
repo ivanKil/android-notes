@@ -3,18 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_notes">
+    app:startDestination="@id/nav_reg">
+
 
     <fragment
         android:id="@+id/nav_notes"
         android:name="com.lessons.notes.note.MainNoteFragment"
-        android:label="@string/menu_home"
+        android:label="@string/menu_note"
         tools:layout="@layout/fragment_notes" />
 
     <fragment
         android:id="@+id/nav_about"
         android:name="com.lessons.notes.about.AboutInfo"
-        android:label="@string/menu_gallery"
+        android:label="@string/menu_about"
         tools:layout="@layout/about" />
+
+    <fragment
+        android:id="@+id/nav_reg"
+        android:name="com.lessons.notes.StartFragment"
+        android:label="@string/menu_reg"
+        tools:layout="@layout/fragment_start" />
 
 </navigation>

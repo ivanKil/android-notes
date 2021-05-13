@@ -5,18 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.lessons.notes.AppRouter;
+import com.lessons.notes.AppRouterHolder;
 import com.lessons.notes.R;
-import com.lessons.notes.note.edit.NoteEditFragment;
 
 public class MainNoteFragment extends Fragment {
-    private final String STACK_BEFORE_EDIT = "STACK_BEFORE_EDIT";
-    FragmentManager fragmentManager;
+    AppRouter appRouter;
+
+    public static MainNoteFragment newInstance() {
+        return new MainNoteFragment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -27,34 +31,27 @@ public class MainNoteFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fragmentManager = getChildFragmentManager();
-        if (!getResources().getBoolean(R.bool.isLandscape)) {
-            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        }
-        NoteViewModel viewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
-        viewModel.getSelected().observe(getViewLifecycleOwner(), note -> {
-                    if (note != null && note.isForEdit()) {
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.frame_note_info, NoteEditFragment.newInstance(note))
-                                .addToBackStack(STACK_BEFORE_EDIT).commit();
-                    } else {
-                        showInfo();
-                    }
+
+        if (getActivity() instanceof AppRouterHolder) {
+            appRouter = ((AppRouterHolder) getActivity()).getRouter();
+
+            NoteViewModel viewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
+            viewModel.getSelected().observe(getViewLifecycleOwner(), note -> appRouter.showNoteInfo(note));
+            viewModel.getSavedNote().observe(getViewLifecycleOwner(), note -> appRouter.showNoteEdit(note));
+
+            OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+                @Override
+                public void handleOnBackPressed() {
+                    appRouter.showNotes();
                 }
-        );
-        viewModel.getSavedNote().observe(getViewLifecycleOwner(), note -> {
-            fragmentManager.popBackStack(STACK_BEFORE_EDIT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            if (getResources().getBoolean(R.bool.isLandscape)) {
-                showInfo();
-            }
-        });
+            };
+            requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+        }
     }
 
-    private void showInfo() {
-        fragmentManager.beginTransaction()
-                .replace(R.id.frame_note_info, NoteInfoFragment.newInstance(null))
-                .addToBackStack(null).commit();
+    @Override
+    public void onDetach() {
+        appRouter = null;
+        super.onDetach();
     }
-
-
 }

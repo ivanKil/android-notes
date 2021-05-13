@@ -90,7 +90,7 @@ public class NoteInfoFragment extends Fragment {
     }
 
     private void setData() {
-        if (note != null && note.getId() != -1) {
+        if (note != null && !note.getId().equals("-1")) {
             tvName.setText(note.getName());
             tvText.setText(note.getText());
             dateTv.setText(dateFormat.format(note.getDate()));
