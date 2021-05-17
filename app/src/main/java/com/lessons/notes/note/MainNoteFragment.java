@@ -15,7 +15,7 @@ import com.lessons.notes.R;
 import com.lessons.notes.note.edit.NoteEditFragment;
 
 public class MainNoteFragment extends Fragment {
-    private String STACK_BEFORE_EDIT = "STACK_BEFORE_EDIT";
+    private final String STACK_BEFORE_EDIT = "STACK_BEFORE_EDIT";
     FragmentManager fragmentManager;
 
     @Override
@@ -33,7 +33,7 @@ public class MainNoteFragment extends Fragment {
         }
         NoteViewModel viewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
         viewModel.getSelected().observe(getViewLifecycleOwner(), note -> {
-                    if (note.isForEdit()) {
+                    if (note != null && note.isForEdit()) {
                         fragmentManager.beginTransaction()
                                 .replace(R.id.frame_note_info, NoteEditFragment.newInstance(note))
                                 .addToBackStack(STACK_BEFORE_EDIT).commit();

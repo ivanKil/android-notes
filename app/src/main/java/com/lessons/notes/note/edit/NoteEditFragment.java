@@ -1,10 +1,10 @@
 package com.lessons.notes.note.edit;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,25 +68,29 @@ public class NoteEditFragment extends Fragment {
         tveName = ((TextInputEditText) view.findViewById(R.id.note_name));
         tveText = ((TextInputEditText) view.findViewById(R.id.note_text));
         dateTv = view.findViewById(R.id.note_date);
-        notesDate = note.getDate();
+        notesDate = note.getDate() == null ? new Date() : note.getDate();
         setData();
-        DatePicker datePicker = view.findViewById(R.id.datePicker);
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(notesDate);
-        datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH), changeDateNotesListeners(dateTv, datePicker));
-        dateTv.setOnClickListener(v -> datePicker.setVisibility(View.VISIBLE));
+        dateTv.setOnClickListener(v -> {
+            new DatePickerDialog(getContext(), changeDateNotesListeners(),
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH))
+                    .show();
+        });
         view.findViewById(R.id.save_note_btn).setOnClickListener(v -> saveNote());
     }
 
     private void setData() {
-        tveName.setText(note.getName());
-        tveText.setText(note.getText());
+        if (note.getId() != -1) {
+            tveName.setText(note.getName());
+            tveText.setText(note.getText());
+        }
         dateTv.setText(dateFormat.format(notesDate));
     }
 
-
-    private DatePicker.OnDateChangedListener changeDateNotesListeners(TextView dateTv, DatePicker datePicker) {
+    private DatePickerDialog.OnDateSetListener changeDateNotesListeners() {
         return (view, year, monthOfYear, dayOfMonth) -> {
             Calendar c = new GregorianCalendar();
             c.set(Calendar.YEAR, year);
@@ -94,7 +98,6 @@ public class NoteEditFragment extends Fragment {
             c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             notesDate = c.getTime();
             dateTv.setText(dateFormat.format(notesDate));
-            datePicker.setVisibility(View.GONE);
         };
     }
 
@@ -103,10 +106,7 @@ public class NoteEditFragment extends Fragment {
             Toast.makeText(requireContext(), getView().getResources().getString(R.string.empty_name), Toast.LENGTH_SHORT).show();
             return;
         }
-        note.setName(tveName.getText().toString());
-        note.setText(tveText.getText().toString());
-        note.setDate(new Date(notesDate.getTime()));
-        viewModel.saveNote(note);
-        viewModel.requestNotes();
+        Note newN = new Note(note.getId(), tveName.getText().toString(), tveText.getText().toString(), new Date(notesDate.getTime()));
+        viewModel.saveNote(newN);
     }
 }

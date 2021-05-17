@@ -19,7 +19,12 @@ public class NotesRepository {
     public boolean updateNote(Note note) {
         Note n = getNoteById(note.getId());
         if (n == null) {
-            return false;
+            synchronized (this) {
+                long nextId = notes.get(notes.size() - 1).getId() + 1;
+                Note newNote = new Note(nextId, note.getName(), note.getText(), note.getDate());
+                notes.add(newNote);
+            }
+            return true;
         } else {
             notes.set(notes.indexOf(n), note);
             return true;
@@ -85,5 +90,24 @@ public class NotesRepository {
     public ArrayList<Note> sortByDate() {
         Collections.sort(notes, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
         return notes;
+    }
+
+    public int delete(Note note) {
+        int ind = notes.indexOf(note);
+        if (ind != -1) {
+            notes.remove(note);
+            return ind;
+        }
+        return -1;
+    }
+
+    public Note getNearNote(int ind) {
+        if (ind > 0 && ind - 1 < notes.size()) {
+            return notes.get(ind - 1);
+        } else if (ind + 1 < notes.size())
+            return notes.get(ind + 1);
+        else if (ind < notes.size())
+            return notes.get(ind);
+        return null;
     }
 }

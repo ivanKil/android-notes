@@ -4,9 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Note implements Parcelable {
-    private long id;
+    private final long id;
     private String name;
     private String text;
     private Date date;
@@ -21,6 +22,9 @@ public class Note implements Parcelable {
         return this;
     }
 
+    public Note() {
+        id = -1;
+    }
 
     public Note(long id, String name, String text, Date date) {
         this.id = id;
@@ -97,5 +101,21 @@ public class Note implements Parcelable {
                 ", text='" + text + '\'' +
                 ", date=" + date +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Note note = (Note) o;
+        return id == note.id &&
+                Objects.equals(name, note.name) &&
+                Objects.equals(text, note.text) &&
+                Objects.equals(date, note.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, text, date);
     }
 }
