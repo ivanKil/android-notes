@@ -27,6 +27,10 @@ public class NotesFragment extends Fragment {
     private NoteViewModel viewModel;
     private static final int MY_DEFAULT_DURATION = 1000;
 
+    public static Fragment newInstance() {
+        return new NotesFragment();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

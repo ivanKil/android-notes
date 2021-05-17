@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.lessons.notes.note.domain.IRepository;
 import com.lessons.notes.note.domain.Note;
-import com.lessons.notes.note.domain.NotesRepository;
+import com.lessons.notes.note.domain.NotesRepositoryFirestore;
 
 import java.util.List;
 
@@ -32,15 +33,17 @@ public class NoteViewModel extends ViewModel {
     }
 
 
-    private final NotesRepository repository = new NotesRepository();
+    private final IRepository repository = new NotesRepositoryFirestore();
 
     public LiveData<List<Note>> getNotesLiveData() {
         return notesLiveData;
     }
 
     public void requestNotes() {
-        List<Note> notes = repository.getNotes();
-        notesLiveData.setValue(notes);
+        repository.init(notes -> {
+                    notesLiveData.setValue(notes);
+                }
+        );
     }
 
     public void filterByName(String text) {
@@ -57,13 +60,15 @@ public class NoteViewModel extends ViewModel {
 
     public void updateNote(Note note) {
         note.setForEdit(false);
-        repository.updateNote(note);
+        repository.updateNote(note, notes -> {
+            notesLiveData.setValue(notes);
+        });
         savedNote.setValue(null);
-        notesLiveData.setValue(repository.getNotes());
+
     }
 
     public void delete(Note note) {
-        repository.delete(note);
-        notesLiveData.setValue(repository.getNotes());
+        repository.delete(note, notes -> notesLiveData.setValue(notes));
+
     }
 }

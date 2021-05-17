@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class NotesRepository {
+public class NotesRepository implements IRepository {
     private static ArrayList<Note> notes;
 
     static {
@@ -16,24 +16,23 @@ public class NotesRepository {
         return notes;
     }
 
-    public boolean updateNote(Note note) {
+    public void updateNote(Note note, OnUpdateNotesResponse onUpdateNotesResponse) {
         Note n = getNoteById(note.getId());
         if (n == null) {
             synchronized (this) {
-                long nextId = notes.get(notes.size() - 1).getId() + 1;
-                Note newNote = new Note(nextId, note.getName(), note.getText(), note.getDate());
+                long nextId = Long.parseLong(notes.get(notes.size() - 1).getId()) + 1;
+                Note newNote = new Note(nextId + "", note.getName(), note.getText(), note.getDate());
                 notes.add(newNote);
             }
-            return true;
         } else {
             notes.set(notes.indexOf(n), note);
-            return true;
         }
+        onUpdateNotesResponse.onUpdate(notes);
     }
 
-    public Note getNoteById(long id) {
+    private Note getNoteById(String id) {
         for (Note n : notes) {
-            if (n.getId() == id) {
+            if (n.getId().equals(id)) {
                 return n;
             }
         }
@@ -41,12 +40,14 @@ public class NotesRepository {
     }
 
     private static void init() {
+        if (notes != null)
+            return;
         notes = new ArrayList<>();
-        notes.add(new Note(1, "Заметка1 длинный заголовок на несколько строк", "Текст1", new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24)));
-        notes.add(new Note(2, "Заметка2", "Текст2", new Date(System.currentTimeMillis() - 2000 * 60 * 60 * 24)));
-        notes.add(new Note(3, "Заметка3", "Текст3", new Date(System.currentTimeMillis() - 3000 * 60 * 60 * 24)));
-        notes.add(new Note(4, "Заметка4", "Текст4", new Date(System.currentTimeMillis() - 4000 * 60 * 60 * 24)));
-        notes.add(new Note(5, "Отрывок \"Крестьянские дети\" ", "Однажды, в студеную зимнюю пору\n" +
+        notes.add(new Note("1", "Заметка1 длинный заголовок на несколько строк", "Текст1", new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24)));
+        notes.add(new Note("2", "Заметка2", "Текст2", new Date(System.currentTimeMillis() - 2000 * 60 * 60 * 24)));
+        notes.add(new Note("3", "Заметка3", "Текст3", new Date(System.currentTimeMillis() - 3000 * 60 * 60 * 24)));
+        notes.add(new Note("4", "Заметка4", "Текст4", new Date(System.currentTimeMillis() - 4000 * 60 * 60 * 24)));
+        notes.add(new Note("5", "Отрывок \"Крестьянские дети\" ", "Однажды, в студеную зимнюю пору\n" +
                 "Я из лесу вышел; был сильный мороз.\n" +
                 "Гляжу, поднимается медленно в гору\n" +
                 "Лошадка, везущая хворосту воз.\n" +
@@ -66,8 +67,8 @@ public class NotesRepository {
                 "— «А кой-тебе годик?» — «Шестой миновал…\n" +
                 "Ну, мертвая!» — крикнул малюточка басом,\n" +
                 "Рванул под уздцы и быстрей зашагал.Год написания: без даты", new Date(System.currentTimeMillis() - 5000 * 60 * 60 * 24)));
-        notes.add(new Note(6, "Заметка6", "Текст6", new Date(System.currentTimeMillis() - 6000 * 60 * 60 * 24)));
-        notes.add(new Note(7, "Заметка7", "Текст7", new Date(System.currentTimeMillis() - 7000 * 60 * 60 * 24)));
+        notes.add(new Note("6", "Заметка6", "Текст6", new Date(System.currentTimeMillis() - 6000 * 60 * 60 * 24)));
+        notes.add(new Note("7", "Заметка7", "Текст7", new Date(System.currentTimeMillis() - 7000 * 60 * 60 * 24)));
     }
 
     public ArrayList<Note> filterByName(String text) {
@@ -92,22 +93,20 @@ public class NotesRepository {
         return notes;
     }
 
-    public int delete(Note note) {
+    public void delete(Note note, OnUpdateNotesResponse onUpdateNotesResponse) {
         int ind = notes.indexOf(note);
         if (ind != -1) {
             notes.remove(note);
-            return ind;
         }
-        return -1;
+        onUpdateNotesResponse.onUpdate(notes);
     }
 
-    public Note getNearNote(int ind) {
-        if (ind > 0 && ind - 1 < notes.size()) {
-            return notes.get(ind - 1);
-        } else if (ind + 1 < notes.size())
-            return notes.get(ind + 1);
-        else if (ind < notes.size())
-            return notes.get(ind);
-        return null;
+    public NotesRepository init(OnUpdateNotesResponse onUpdateNotesResponse) {
+        init();
+        if (onUpdateNotesResponse != null) {
+            onUpdateNotesResponse.onUpdate(notes);
+        }
+        return this;
     }
+
 }

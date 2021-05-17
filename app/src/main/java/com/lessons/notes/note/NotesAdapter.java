@@ -72,6 +72,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     }
 
     public void setData(List<Note> toAdd) {
+        if (toAdd == null)
+            return;
         NotesDiffUtilCallback callback = new NotesDiffUtilCallback(data, toAdd);
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(callback);
         data.clear();
@@ -124,17 +126,21 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
         @Override
         public int getOldListSize() {
+            if (oldList == null)
+                return 0;
             return oldList.size();
         }
 
         @Override
         public int getNewListSize() {
+            if (newList == null)
+                return 0;
             return newList.size();
         }
 
         @Override
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            return oldList.get(oldItemPosition).getId() == newList.get(newItemPosition).getId();
+            return oldList.get(oldItemPosition).getId().equals(newList.get(newItemPosition).getId());
         }
 
         @Override
