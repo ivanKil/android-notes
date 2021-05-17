@@ -48,9 +48,7 @@ public class NotesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
-        viewModel.getNotesLiveData().observe(getViewLifecycleOwner(), notes -> {
-            adapter.setData(notes);
-        });
+        viewModel.getNotesLiveData().observe(getViewLifecycleOwner(), notes -> adapter.setData(notes));
         viewModel.getSavedNote().observe(getViewLifecycleOwner(), note -> {
             if (note != null) {
                 viewModel.updateNote(note);

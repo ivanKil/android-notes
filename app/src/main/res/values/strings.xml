@@ -37,4 +37,5 @@
     <string name="qw_delete">Удалить заметку?</string>
     <string name="yes">Да</string>
     <string name="cancel">Отмена</string>
+    <string name="action_change">Изменить</string>
 </resources>

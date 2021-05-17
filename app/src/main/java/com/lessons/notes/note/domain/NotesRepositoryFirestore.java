@@ -102,11 +102,13 @@ public class NotesRepositoryFirestore implements IRepository {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         notes = new ArrayList<>();
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Map<String, Object> doc = document.getData();
-                            String id = document.getId();
-                            Note cardData = NoteMapping.toNote(id, doc);
-                            notes.add(cardData);
+                        if (task.getResult() != null) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> doc = document.getData();
+                                String id = document.getId();
+                                Note cardData = NoteMapping.toNote(id, doc);
+                                notes.add(cardData);
+                            }
                         }
                         Log.d(TAG, "success " + notes.size() + " qnt");
                         onUpdateNotesResponse.onUpdate(notes);

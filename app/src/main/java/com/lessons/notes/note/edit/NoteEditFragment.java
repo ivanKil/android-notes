@@ -104,7 +104,7 @@ public class NoteEditFragment extends DialogFragment {
     }
 
     private void saveNote() {
-        if ("".equals(tveName.getText().toString())) {
+        if (tveName.getText() == null || "".equals(tveName.getText().toString())) {
             Toast.makeText(requireContext(), getView().getResources().getString(R.string.empty_name), Toast.LENGTH_SHORT).show();
             return;
         }
