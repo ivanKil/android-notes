@@ -1,5 +1,6 @@
 package com.lessons.notes.note;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -139,7 +141,13 @@ public class NotesFragment extends Fragment {
                 viewModel.select(adapter.getNoteMenuPosition().setForEdit(true));
                 return true;
             case R.id.action_delete:
-                viewModel.delete(adapter.getNoteMenuPosition().setForEdit(true));
+                new AlertDialog.Builder(getContext()).setMessage(R.string.qw_delete).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        viewModel.delete(adapter.getNoteMenuPosition().setForEdit(true));
+                    }
+                }).setNegativeButton(R.string.cancel, null).setCancelable(false).show();
+
                 return true;
         }
         return super.onContextItemSelected(item);

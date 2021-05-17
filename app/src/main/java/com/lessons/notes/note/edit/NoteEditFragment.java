@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -23,7 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class NoteEditFragment extends Fragment {
+public class NoteEditFragment extends DialogFragment {
     public static final String ARG_NOTE = "ARG_NOTE";
     private Note note;
     private TextView dateTv;
@@ -47,6 +47,7 @@ public class NoteEditFragment extends Fragment {
         if (getArguments() != null) {
             note = getArguments().getParcelable(ARG_NOTE);
         }
+        setCancelable(false);
     }
 
     @Override
@@ -80,6 +81,7 @@ public class NoteEditFragment extends Fragment {
                     .show();
         });
         view.findViewById(R.id.save_note_btn).setOnClickListener(v -> saveNote());
+        view.findViewById(R.id.cancel_edit_btn).setOnClickListener(v -> dismiss());
     }
 
     private void setData() {
@@ -108,5 +110,11 @@ public class NoteEditFragment extends Fragment {
         }
         Note newN = new Note(note.getId(), tveName.getText().toString(), tveText.getText().toString(), new Date(notesDate.getTime()));
         viewModel.saveNote(newN);
+        dismiss();
+    }
+
+    @Override
+    public int getTheme() {
+        return R.style.AlertDialogStyle;
     }
 }
