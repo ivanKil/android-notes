@@ -73,13 +73,13 @@ public class NoteEditFragment extends DialogFragment {
         setData();
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(notesDate);
-        dateTv.setOnClickListener(v -> {
-            new DatePickerDialog(getContext(), changeDateNotesListeners(),
-                    calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH))
-                    .show();
-        });
+        dateTv.setOnClickListener(v ->
+                new DatePickerDialog(requireContext(), changeDateNotesListeners(),
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH))
+                        .show()
+        );
         view.findViewById(R.id.save_note_btn).setOnClickListener(v -> saveNote());
         view.findViewById(R.id.cancel_edit_btn).setOnClickListener(v -> dismiss());
     }
