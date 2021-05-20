@@ -36,8 +36,8 @@ public class MainNoteFragment extends Fragment {
             appRouter = ((AppRouterHolder) getActivity()).getRouter();
 
             NoteViewModel viewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
-            viewModel.getSelected().observe(getViewLifecycleOwner(), note -> appRouter.showNoteInfo(note));
-            viewModel.getSavedNote().observe(getViewLifecycleOwner(), note -> appRouter.showNoteEdit(note));
+            viewModel.getSelected().observe(getViewLifecycleOwner(), appRouter::showNoteInfo);
+            viewModel.getSavedNote().observe(getViewLifecycleOwner(), appRouter::showNoteEdit);
 
             OnBackPressedCallback callback = new OnBackPressedCallback(true) {
                 @Override

@@ -40,10 +40,7 @@ public class NoteViewModel extends ViewModel {
     }
 
     public void requestNotes() {
-        repository.init(notes -> {
-                    notesLiveData.setValue(notes);
-                }
-        );
+        repository.init(notesLiveData::setValue);
     }
 
     public void filterByName(String text) {
@@ -62,13 +59,11 @@ public class NoteViewModel extends ViewModel {
         note.setForEdit(false);
         repository.updateNote(note, notes -> {
             notesLiveData.setValue(notes);
+            select(note);
         });
-        savedNote.setValue(null);
-
     }
 
     public void delete(Note note) {
-        repository.delete(note, notes -> notesLiveData.setValue(notes));
-
+        repository.delete(note, notesLiveData::setValue);
     }
 }

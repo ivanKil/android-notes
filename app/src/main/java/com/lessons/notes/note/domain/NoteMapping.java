@@ -16,16 +16,14 @@ public class NoteMapping {
 
     public static Note toNote(String id, Map<String, Object> doc) {
         Timestamp timeStamp = (Timestamp) doc.get(Fields.DATE);
-        Note note = new Note(id,
+        return new Note(id,
                 (String) doc.get(Fields.NAME),
                 (String) doc.get(Fields.TEXT),
                 timeStamp.toDate());
-        return note;
     }
 
     public static Map<String, Object> toDocument(Note cardData) {
         Map<String, Object> answer = new HashMap<>();
-        //answer.put(Fields.ID, cardData.getId());
         answer.put(Fields.NAME, cardData.getName());
         answer.put(Fields.TEXT, cardData.getText());
         answer.put(Fields.DATE, cardData.getDate());

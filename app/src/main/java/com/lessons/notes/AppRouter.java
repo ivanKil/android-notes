@@ -10,7 +10,7 @@ import com.lessons.notes.note.domain.Note;
 import com.lessons.notes.note.edit.NoteEditFragment;
 
 public class AppRouter {
-    private final String STACK_BEFORE_EDIT = "STACK_BEFORE_EDIT";
+    private final String EDIT_TAG = "EDIT_TAG";
     private final FragmentManager fragmentManager;
     private final Context context;
 
@@ -26,7 +26,6 @@ public class AppRouter {
     }
 
     public void showNoteEdit(Note note) {
-        fragmentManager.popBackStack(STACK_BEFORE_EDIT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         if (context.getResources().getBoolean(R.bool.isLandscape)) {
             if (note != null)
                 showInfo(note);
@@ -37,9 +36,13 @@ public class AppRouter {
 
     public void showNoteInfo(Note note) {
         if (note != null && note.isForEdit()) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.frame_note_info, NoteEditFragment.newInstance(note))
-                    .addToBackStack(null).commit();
+            Fragment f = fragmentManager.findFragmentByTag(EDIT_TAG);
+            if (f != null) {
+                if (((NoteEditFragment) f).isHidden())
+                    ((NoteEditFragment) f).show(fragmentManager, EDIT_TAG);
+            } else {
+                NoteEditFragment.newInstance(note).show(fragmentManager, EDIT_TAG);
+            }
         } else {
             showInfo(note);
         }
@@ -48,7 +51,8 @@ public class AppRouter {
     public void showNotes() {
         if (!context.getResources().getBoolean(R.bool.isLandscape)) {
             Fragment info = fragmentManager.findFragmentById(R.id.frame_note_info);
-            fragmentManager.beginTransaction().hide(info).commit();
+            if (info != null)
+                fragmentManager.beginTransaction().hide(info).commit();
         }
     }
 }
